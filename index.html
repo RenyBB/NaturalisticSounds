@@ -268,10 +268,10 @@ var FreeText = {
     };
 
 
-if (jsPsych.data.get().select('screen_reader').values[0]==1) {
-    var test_timeline = [Stim_Prompt, Stim, DurationFreeText, SubRating, FreeText] }
-else (jsPsych.data.get().select('screen_reader').values[0]==0) {
-    var test_timeline = [Stim_Prompt, Stim, duration_estimation_response, SubRating, FreeText]}
+if (jsPsych.data.get().select('screen_reader').values[0]==1) 
+    { var test_timeline = [Stim_Prompt, Stim, DurationFreeText, SubRating, FreeText] }
+else
+    {var test_timeline = [Stim_Prompt, Stim, duration_estimation_response, SubRating, FreeText]}
 
   
     
