@@ -269,15 +269,36 @@ var FreeText = {
     };
 
 
-if (jsPsych.data.get().select('screen_reader').values[0]==1) 
-    { var test_timeline = [Stim_Prompt, Stim, DurationFreeText, SubRating, FreeText] }
-else
-    {var test_timeline = [Stim_Prompt, Stim, duration_estimation_response, SubRating, FreeText]}
-
-  
     
+    var if_screen_reader_version = {
+    timeline: [DurationFreeText],
+    conditional_function: function(){
+        // get the data from the previous trial,
+        // and check which key was pressed
+        if(jsPsych.data.get().select('screen_reader').values[0]==1){
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
+    
+var if_standard_version = {
+    timeline: [duration_estimation_response],
+    conditional_function: function(){
+        // get the data from the previous trial,
+        // and check which key was pressed
+        var data = jsPsych.data.get().last(1).values()[0];
+        if(jsPsych.data.get().select('screen_reader').values[0]==0)){
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
+   
 
-    timeline.push(test_timeline);
+    timeline.push(Stim_Prompt, Stim, if_screen_reader_version, if_standard_version,  SubRating, FreeText);
 
 
 // Debrief
