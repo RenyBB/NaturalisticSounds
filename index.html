@@ -209,7 +209,6 @@ var Stim = {
     const max_duration = 30;
     const min_duration = 1;
     const all_integer_durations = Array.from({ length: max_duration - min_duration + 1 }, (_, i) => i + min_duration);
-    const all_ms_durations = Array.from({ length: 0.9 - 0.1 + 0.1 }, (_, i) => i + 0.1);
 
     // Duration response
     var duration_estimation_response = {
@@ -251,13 +250,15 @@ var DurationDropDown = {
     [
       {
         type: 'drop-down',
-        prompt: ['Before you continue please report how long you think the sound went on for.<br>Sorry, we misled you a little bit but it was important (we will explain at the end).<br><br>Please report your estimate in seconds in the text box below. We would appreciate it if you could be as precise in your response as possible,   '],
-        options: all_integer_durations
+        prompt: 'Before you continue please report how long you think the sound went on for.<br>Sorry, we misled you a little bit but it was important (we will explain at the end).<br><br>Please report your estimate in seconds in the text box below. We would appreciate it if you could be as precise in your response as possible',
+        question: 'Before you continue please report how long you think the sound went on for.',
+          options: all_integer_durations
       },
       {
         type: 'drop-down',
-        prompt: ['Before you continue please report how long you think the sound went on for.<br>Sorry, we misled you a little bit but it was important (we will explain at the end).<br><br>Please report your estimate in seconds in the text box below. We would appreciate it if you could be as precise in your response as possible,   '],
-        options: all_ms_durations
+        prompt: 'Before you continue please report how long you think the sound went on for.',
+        question: 'Before you continue please report how long you think the sound went on for.',
+        options: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
       }, 
     ]
   ],
