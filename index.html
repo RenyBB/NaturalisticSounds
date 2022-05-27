@@ -209,7 +209,7 @@ var Stim = {
     const max_duration = 30;
     const min_duration = 1;
     const all_integer_durations = Array.from({ length: max_duration - min_duration + 1 }, (_, i) => i + min_duration);
-
+    const all_ms_durations = Array.from({ length: 0.9 - 0.1 + 0.1 }, (_, i) => i + 0.1);
 
     // Duration response
     var duration_estimation_response = {
@@ -224,7 +224,7 @@ var Stim = {
         step: 0.1,
         labels: ['1s', '10s', '15s', '20s', '25s', '30s'],
         button_label: "Submit response",
-        prompt: ['Before you continue please report how long you think the sound went on for.<br>Sorry, we misled you a little bit but it was important (we will explain at the end).<br><br>Drag the slider to select the duration you want to report.<br>The selected duration will appear above the slider.<br>Click <b>Submit response</b> to save your selected response and continue.<br><br>'],
+        prompt: ['Before you continue please report how long you think the sound went on for.<br>Sorry, we misled you a little bit but it was important (we will explain at the end).<br><br>Drag the slider to select the duration you want to report.<br>The selected duration will appear above the slider.<br>Click <b>Submit response</b> to save your selected response and continue.'],
         on_finish: function (data) {
             var veridical_duration = 7.650;
             data.veridicatl_duration = veridical_duration;
@@ -237,14 +237,31 @@ var Stim = {
     
 var DurationFreeText = {
   type: jsPsychSurveyText,
-    preamble: ['Before you continue please report how long you think the sound went on for.<br>Sorry, we misled you a little bit but it was important (we will explain at the end).<br><br>Drag the slider to select the duration you want to report.<br>The selected duration will appear above the slider.<br>Click <b>Submit response</b> to save your selected response and continue.<br><br>'],
+    preamble: ['Before you continue please report how long you think the sound went on for.<br>Sorry, we misled you a little bit but it was important (we will explain at the end).<br><br>Please report your estimate in seconds in the text box below. We would appreciate it if you could be as precise in your response as possible,   '],
   questions: [
-    {prompt: 'Report the seconds' },
-    {prompt: 'Report the milliseconds'}
+    {prompt: '', required: true },
   ],
-    button_label: ['Continue']
+    button_label: ['Submit response']
 }
 
+
+var DurationDropDown = {
+  type: jsPsychSurvey,
+  pages: [
+    [
+      {
+        type: 'drop-down',
+        prompt: ['Before you continue please report how long you think the sound went on for.<br>Sorry, we misled you a little bit but it was important (we will explain at the end).<br><br>Please report your estimate in seconds in the text box below. We would appreciate it if you could be as precise in your response as possible,   '],
+        options: all_integer_durations
+      },
+      {
+        type: 'drop-down',
+        prompt: ['Before you continue please report how long you think the sound went on for.<br>Sorry, we misled you a little bit but it was important (we will explain at the end).<br><br>Please report your estimate in seconds in the text box below. We would appreciate it if you could be as precise in your response as possible,   '],
+        options: all_ms_durations
+      }, 
+    ]
+  ],
+};
 
 var FreeText = {
   type: jsPsychSurveyText,
@@ -271,7 +288,7 @@ var FreeText = {
 
     
     var if_screen_reader_version = {
-    timeline: [DurationFreeText],
+    timeline: [DurationDropDown],
     conditional_function: function(){
         // get the data from the previous trial,
         // and check which key was pressed
