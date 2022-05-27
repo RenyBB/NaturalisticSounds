@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Duration comparison</title>
+    <script src="https://unpkg.com/jspsych@7.0.0"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-html-button-response@1.0.0"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-browser-check@1.0.0"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-audio-button-response@1.0.0"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-instructions@1.0.0"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-survey-text@1.0.0"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-survey-likert@1.0.0"></script>
+    <script src="NaturalisticSounds/7650/Stimuli.js"></script>
+    <script src="plugin-html-slider-response_display_slider_value.js"></script>
+
+    <link rel="stylesheet" href="https://unpkg.com/jspsych@7.0.0/css/jspsych.css">
+</head>
+<body>
+    <style>
+    </style>
+</body>
+<script>
+
+// Task description
+/* Participants will hear pairs of sounds and have to say which sound (1st or 2nd) is higher in pitch.
+   The task consists of training phase (2 trials) and test phase (30 trials).
+   In the training phase participants receive feedback whether their response was correct or incorrect.
+   There is no feedback in the test phase. On some trials in the test phase participants are also asked an additional subjective rating question.
+   There are 4 different subejctive question. Each is repeated twice.
+*/
+
+// NOTE: the stimuli are located in Stimuli/PitchDiscrimination
+// There are 2 js files in that are used to load the stimuli: PitchDiscrimination_TestStimuli and PitchDiscrimination_TrainingStimuli
+
+// TO DO
+/*
+(1) Feedback at the end of the task: this corresponds to the number of correct responses in the test phase. I have added the code to count the number of correct responses at the end, but it doesn't work.
+(2) The raw data is a bit hideous, I have to tidy it up.
+*/
+
+  // initialize jsPsych
+  // NB: remove data display from final version! */
+  var jsPsych = initJsPsych({
+    use_webaudio: false,
+    show_progress_bar: true,
+    auto_update_progress_bar: false,
+    on_finish: function () {
+       jsPsych.data.displayData();
+    }
+  });
+
+
+var timeline = [];
+
+
+  // Collect system information
+  var setup_info = {
+    type: jsPsychBrowserCheck
+  };
+    timeline.push(setup_info);
+
+   // Sample stimulus
+    var stimulus_path = "NaturalisticSounds/7650/";
+    var chosen_stim = jsPsych.randomization.sampleWithoutReplacement(NaturalisticSounds_7650, 1)[0].Stimulus;
+    var stim_filename = stimulus_path.concat(chosen_stim);
+
+    var subjective_rating = jsPsych.randomization.sampleWithoutReplacement(['Valence', 'Arousal', 'Impact'], 1)[0];
+
+
+    var ValenceInstructions = [
+        `<p> You will listen to two audio recordings of sounds we experience in everyday life.
+         <br> After the first recording, we will ask you to rate how that sound made you feel.
+         <br> After the second recording, we will ask you to rate the duration of that recording.
+         <br> We will instruct you in more detail how to report the duration of the second sound later in the task.
+         <br><br> The rest of these instructions will focus on how to report your emotions related to the first sound. </p>`,
+
+        `<p>After listening to the sound, we will ask you to indicate how you felt in reaction to it on a scale ranging from 1 - happy, to 9 - unhappy. On one extreme of the scale (1) you felt happy, pleased, satisfied, contented, hopeful, while listening to the sound; whereas on the other end of the scale (9) you felt completely unhappy, annoyed, unsatisfied, melancholic, despaired, bored. If you felt completely neutral, neither happy nor unhappy, you can respond 5. Please provide the most accurate rating of how you felt in response to the sound using any number between 1 and 9.</p>`];
+
+   
+    var ArousalInstructions = [
+        `<p> You will listen to two audio recordings of sounds we experience in everyday life.
+         <br> After the first recording, we will ask you to rate how that sound made you feel.
+         <br> After the second recording, we will ask you to rate the duration of that recording.
+         <br> We will instruct you in more detail how to report the duration of the second sound later in the task.
+         <br><br> The rest of these instructions will focus on how to report your emotions related to the first sound. </p>`,
+
+        `<p> After listening to the sound, we will ask you to indicate how you felt in reaction to the sound  on a scale ranging from 1 - excited, to 9 - calm. At one extreme of the scale (1) you felt stimulated, excited, frenzied, jittery, wide-awake, aroused; whereas on the other end of the scale (9) you felt completely relaxed, calm, sluggish, dull, sleepy, unaroused. If you were not at all excited nor at all calm, you can respond 5. Please provide the most accurate rating of how you felt in response to the sound using any number between 1 and 9. </b></p>`];
+
+    var ImpactInstructions = [
+        `<p> You will listen to two audio recordings of sounds we experience in everyday life.
+         <br> After the first recording, we will ask you to rate how that sound made you feel.
+         <br> After the second recording, we will ask you to rate the duration of that recording.
+         <br> We will instruct you in more detail how to report the duration of the second sound later in the task.
+         <br><br> The rest of these instructions will focus on how to report your emotions related to the first sound. </p>`,
+
+        `<p> After listening to the sound, we will ask you to judge whether you feel the content of the sound created an instant sense of impact on you personally on a scale from 1 - no impact, to 9 - high impact. Try not to think in detail about the sound or its contents in terms of particular properties like the particular positive or negative feelings it might invoke in you (e.g., fear, anger, joy, etc.), how distinctive the sound is or how many thoughts and ideas it leads to. We just want an estimate of its overall immediate impact, irrespective of what it is that might underlie its impact on you personally (i.e., whether it’s positive, negative or neither). Remember, it is your own personal reaction we are interested in, not how you think people in general should feel. Just report your “instant” judgment.</p>`];
+
+
+    var ValenceQuestion = ['<p>Please indicate how you felt in reaction to the sound on a happy vs.unhappy scale.On one extreme of the scale(1) you felt happy, pleased, satisfied, contented, hopeful, while listening to the sound.unsatisfied, melancholic, despaired, bored.If you felt completely neutral, neither happy nor unhappy, you can respond 5.Please provide the most accurate rating of how you felt in response to the sound using any number between 1 and 9. ']
+    var ArousalQuestion = ['<p>Please use the following scale to indicate how you felt in reaction to the sound on an excited vs. calm scale. At one extreme of the scale (1) you felt stimulated, excited, frenzied, jittery, wide-awake, aroused; whereas on the other end of the scale (9) you felt completely relaxed, calm, sluggish, dull, sleepy, unaroused. If you were not at all excited nor at all calm, you can respond 5. Please provide the most accurate rating of how you felt in response to the sound using any number between 1 and 9.</p>']
+    var ImpactQuestion = [ '<p>We would now like you to judge whether you feel the content of the sound created an instant sense of impact on you personally.Try not to think in detail about the sound or its contents in terms of particular properties like the particular positive or negative feelings it might invoke in you(e.g., fear, anger, joy, etc.), how distinctive the sound is or how many thoughts and ideas it leads to.We just want an estimate of its overall immediate impact, irrespective of what it is that might underlie its impact on you personally(i.e., whether it’s positive, negative or neither).Remember, it is your own personal reaction we are interested in, not how you think people in general should feel.Just report your “instant” judgment using the following scale.</p>']
+
+    if (subjective_rating == "Valence") {
+        selected_instructions = ValenceInstructions;
+        likert_q = ValenceQuestion;
+        likert_labels = ["1<br>Completely happy", "2", "3", "4", "5", "6", "7", "8", "9<br>Completely unhappy"]
+    }
+    else if (subjective_rating == "Arousal") {
+        selected_instructions = ArousalInstructions;
+        likert_q = ArousalQuestion;
+        likert_labels = ["1<br>Excited", "2", "3", "4", "5", "6", "7", "8", "9<br>Calm"]
+    }
+    else if (subjective_rating == "Impact") {
+        selected_instructions = ImpactInstructions;
+        likert_q = ImpactQuestion;
+        likert_labels = ["1<br>No impact", "2", "3", "4", "5", "6", "7", "8", "9<br>High impact"]
+    }
+
+ //welcome message
+    var welcome_message = {
+        type: jsPsychHtmlButtonResponse,
+        stimulus: `<p>This task contains audio clips. </p>
+    <p>  Please make sure you are in a quiet and relaxed environment and have a pair of headphones or speakers.</p>
+    <p>  You will now hear a tone so that you can adjust the volume of the audio to a comfortable level.<br>Set the volume low in case it is too loud!</p>`,
+    choices: ['Continue']
+    };
+  timeline.push(welcome_message);
+
+
+  /* Preload stimuli
+      var preload = {
+          type: jsPsychPreload,
+          audio: [],
+      };
+  timeline.push(preload);*/
+
+  // Adjust volume
+  var adjust_volume = {
+    type: jsPsychAudioButtonResponse,
+    stimulus: 'VolumeAdjustmentStim.mp3',
+    prompt: 'Adjust the volume to a comfortable level.',
+    choices: ['Continue'],
+    response_ends_trial: true
+};
+timeline.push(adjust_volume);
+
+
+
+// Test phase instructions
+   var testInstructions = {
+       type: jsPsychInstructions,
+       pages: selected_instructions,
+         allow_backward: true,
+         show_clickable_nav: true,
+         button_label_next: ['Continue']
+    };
+    timeline.push(testInstructions);
+
+    var SubRating_Instructions = {
+        pages: []
+    }
+
+var post_prompt_iti = 700;
+
+
+var Stim_Prompt = {
+    type: jsPsychHtmlButtonResponse,
+    stimulus: 'The sound will play shortly after you press Play',
+    choices: ['Play'],
+    post_trial_gap: post_prompt_iti
+};
+
+
+var Stim = {
+    type: jsPsychAudioButtonResponse,
+    stimulus: stim_filename,
+    choices: '',
+    trial_ends_after_audio:true,
+    post_trial_gap: post_prompt_iti
+    };
+
+
+
+
+    const max_duration = 30;
+    const min_duration = 1;
+    const all_integer_durations = Array.from({ length: max_duration - min_duration + 1 }, (_, i) => i + min_duration);
+
+
+    // Duration response
+    var duration_estimation_response = {
+        type: jsPsychHtmlSliderResponseDisplayValue,
+        stimulus: '',
+        require_movement: true,
+        required: true,
+        min: min_duration,
+        max: max_duration,
+        slider_width: 800,
+        slider_start: function () { return jsPsych.randomization.sampleWithoutReplacement(all_integer_durations, 1)[0] },
+        step: 0.1,
+        labels: ['1s', '10s', '15s', '20s', '25s', '30s'],
+        button_label: "Submit response",
+        prompt: ['Before you continue please report how long you think the sound went on for.<br>Sorry, we misled you a little bit but it was important (we will explain at the end).<br><br>Drag the slider to select the duration you want to report.<br>The selected duration will appear above the slider.<br>Click <b>Submit response</b> to save your selected response and continue.<br><br>'],
+        on_finish: function (data) {
+            var veridical_duration = 7.650;
+            data.veridicatl_duration = veridical_duration;
+            data.response_error = veridical_duration - data.response;
+            console.log(veridical_duration);
+            console.log(data.response);
+            console.log(data.response_error);
+        },
+    };
+    
+    var SubRating = {
+        type: jsPsychSurveyLikert,
+        questions: [
+            {
+                prompt: likert_q,
+                labels: likert_labels,
+                
+            }
+        ],
+        on_finish: function (data) {
+            data.condition = subjective_rating
+        }
+    };
+
+var FreeText = {
+  type: jsPsychSurveyText,
+  questions: [
+    {prompt: 'Finally, did you recognize what the source of the sound was - for example the cry of a specific animal, nature sounds, city sounds, machinery? We will appreciate it if you could tell us in a few words what you thought the source of the sound was.'}
+  ],
+    button_label: ['Continue']
+}
+
+
+
+    timeline.push(Stim_Prompt, Stim, duration_estimation_response, SubRating, FreeText);
+
+
+// Debrief
+      var DebriefMessage = {
+          type: jsPsychHtmlButtonResponse,
+          stimulus: [''],
+          choices: ['See your data']
+      };
+      timeline.push(DebriefMessage);
+
+
+  // Run the experiment
+  jsPsych.run(timeline);
+
+</script>
+</html>
