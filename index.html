@@ -76,8 +76,9 @@ var timeline = [];
 
         `<p>After listening to the sound, we will ask you to indicate how you felt in reaction to it on a scale ranging from 1 - happy, to 9 - unhappy. 
         On one extreme of the scale (1) you felt happy, pleased, satisfied, contented, hopeful, while listening to the sound; 
-        whereas on the other end of the scale (9) you felt completely unhappy, annoyed, unsatisfied, melancholic, despaired, bored. 
-        If you felt completely neutral, neither happy nor unhappy, you can respond 5. 
+        whereas on the other end of the scale (9) you felt completely unhappy, annoyed, unsatisfied, melancholic, despaired, bored. </p>`,
+       
+        `<p> If you felt completely neutral, neither happy nor unhappy, you can respond 5. 
         Please provide the most accurate rating of how you felt in response to the sound using any number between 1 and 9.</p>`];
 
    
@@ -90,8 +91,8 @@ var timeline = [];
 
         `<p> After listening to the sound, we will ask you to indicate how you felt in reaction to the sound 
         on a scale ranging from 1 - excited, to 9 - calm. At one extreme of the scale (1) you felt stimulated, excited, frenzied, jittery, wide-awake, aroused; 
-        whereas on the other end of the scale (9) you felt completely relaxed, calm, sluggish, dull, sleepy, unaroused. 
-        If you were not at all excited nor at all calm, you can respond 5. 
+        whereas on the other end of the scale (9) you felt completely relaxed, calm, sluggish, dull, sleepy, unaroused.  </p>`,
+       `<p>  If you were not at all excited nor at all calm, you can respond 5. 
         Please provide the most accurate rating of how you felt in response to the sound using any number between 1 and 9.</p>`];
 
     var ImpactInstructions = [
@@ -102,8 +103,10 @@ var timeline = [];
          <br><br> The rest of these instructions will focus on how to report your emotions related to the first sound. </p>`,
 
         `<p> After listening to the sound, we will ask you to judge whether you feel the content of the sound created an instant sense of impact on you personally on a scale from 1 - no impact, to 9 - high impact. 
-        Try not to think in detail about the sound or its contents in terms of particular properties like the particular positive or negative feelings it might invoke in you (e.g., fear, anger, joy, etc.), 
-        how distinctive the sound is or how many thoughts and ideas it leads to. We just want an estimate of its overall immediate impact, irrespective of what it is that might underlie its impact on you personally 
+        Try not to think in detail about the sound or its contents in terms of particular properties like the particular positive or negative feelings it might invoke in you (e.g., fear, anger, joy, etc.),
+        how distinctive the sound is or how many thoughts and ideas it leads to. </p>`,
+        
+        `<p> We just want an estimate of its overall immediate impact, irrespective of what it is that might underlie its impact on you personally 
         (i.e., whether it’s positive, negative or neither). Remember, it is your own personal reaction we are interested in, not how you think people in general should feel. Just report your “instant” judgment.</p>`];
 
 
@@ -221,7 +224,7 @@ var Stim = {
         slider_width: 800,
         slider_start: function () { return jsPsych.randomization.sampleWithoutReplacement(all_integer_durations, 1)[0] },
         step: 0.1,
-        labels: ['1s', '10s', '15s', '20s', '25s', '30s'],
+        labels: ['1s', '5s', '10s', '15s', '20s', '25s', '30s'],
         button_label: "Submit response",
         prompt: ['Before you continue please report how long you think the sound went on for.<br> Sorry, we misled you a little bit but it was important (we will explain at the end).<br><br>Drag the slider to select the duration you want to report.<br>The selected duration will appear above the slider.<br>Click <b>Submit response</b> to save your selected response and continue.<br><br>'],
         on_finish: function (data) {
