@@ -12,6 +12,7 @@
     <script src="https://unpkg.com/@jspsych/plugin-survey@0.1.1"></script>
     <script src="NaturalisticSounds/7650/Stimuli.js"></script>
     <script src="plugin-html-slider-response_display_slider_value.js"></script>
+    <script src="plugin-audio-keyboard-response-accessible.js"></script>
 
     <link rel="stylesheet" href="https://unpkg.com/jspsych@7.0.0/css/jspsych.css">
     <link rel="stylesheet" href="https://unpkg.com/@jspsych/plugin-survey@0.1.1/css/survey.css">
@@ -201,9 +202,9 @@ var Stim_Prompt = {
 
 
 var Stim = {
-    type: jsPsychAudioButtonResponse,
+    type: jsPsychAudioKeyboardResponseAccessible,//jsPsychAudioButtonResponse,
     stimulus: stim_filename,
-    choices: '',
+    choices:"NO_KEYS", //'',
     trial_ends_after_audio:true,
     post_trial_gap: post_prompt_iti
     };
@@ -326,7 +327,7 @@ var DurationQuestion_Awareness = {
 
    
 
-    timeline.push(Stim_Prompt, Stim, if_screen_reader_version, if_standard_version, DurationQuestion_Awareness,  SubRating, FreeText);
+    timeline.push(Stim, if_screen_reader_version, if_standard_version, DurationQuestion_Awareness,  SubRating, FreeText);
 
 
 // Debrief
