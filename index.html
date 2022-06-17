@@ -158,7 +158,7 @@ var timeline = [];
     <p>  You will now hear a tone so that you can adjust the volume of the audio to a comfortable level.<br>Set the volume low in case it is too loud!</p>`,
     choices: ['Continue']
     };
-  timeline.push(welcome_message);
+  //timeline.push(welcome_message);
 
 
   /* Preload stimuli
@@ -176,7 +176,7 @@ var timeline = [];
     choices: ['Continue'],
     response_ends_trial: true
 };
-timeline.push(adjust_volume);
+//timeline.push(adjust_volume);
 
 
 
@@ -233,7 +233,7 @@ var Stim = {
         step: 0.1,
         labels: ['1', '10', '20', '30'],
         button_label: "Submit response",
-        prompt: ['Before you continue please report how long you think the sound went on for.<br> Sorry, we misled you a little bit but it was important (we will explain at the end).<br><br>Drag the slider to select the duration you want to report.<br>The selected duration will appear above the slider.<br>Click <b>Submit response</b> to save your selected response and continue.<br><br>'],
+        prompt: ['Before you continue please report how long you think the sound lasted for.<br> Sorry, we misled you a little bit but it was important (we will explain at the end).<br><br>Drag the slider to select the duration you want to report.<br><br>'], // <br>The selected duration will appear above the slider.<br>Click <b>Submit response</b> to save your selected response and continue.
         on_finish: function (data) {
             var veridical_duration = 7.650;
             data.veridicatl_duration = veridical_duration;
@@ -246,7 +246,7 @@ var Stim = {
     
 var DurationFreeText = {
   type: jsPsychSurveyText,
-    preamble: ['Before you continue please report how long you think the sound went on for.<br>Sorry, we misled you a little bit but it was important (we will explain at the end).<br><br>Please report your estimate in seconds in the text box below. We would appreciate it if you could be as precise in your response as possible,   '],
+    preamble: ['Before you continue please report how long you think the sound lasted for.<br>Sorry, we misled you a little bit but it was important (we will explain at the end).<br><br>Please report your estimate in seconds in the text box below. We would appreciate it if you could be as precise in your response as possible,   '],
   questions: [
     {prompt: '', required: true },
   ],
@@ -260,7 +260,7 @@ var DurationDropDown = {
     [
       {
         type: 'drop-down',
-        prompt: 'Before you continue please report how long you think the sound went on for. Sorry, we misled you a little bit but it was important (we will explain at the end). Please report your estimate in seconds in the text box below. We would appreciate it if you could be as precise in your response as possible using both seconds and milliseconds - for example 15.100 seconds. First, please select the seconds part of your response - you can select any full number between 1 and 30 seconds.',
+        prompt: 'Before you continue please report how long you think the sound lasted for. Sorry, we misled you a little bit but it was important (we will explain at the end). Please report your estimate in seconds in the text box below. We would appreciate it if you could be as precise in your response as possible using both seconds and milliseconds - for example 15.100 seconds. First, please select the seconds part of your response - you can select any full number between 1 and 30 seconds.',
         options: all_integer_durations
       },
       {
